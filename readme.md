@@ -3,7 +3,7 @@
 This is a simple implementation of the game Battle Ship.
 The computer will randomically choose the size of the board, and where to place the 11 ships over this board.
   
-* Details: *  
+**Details:**  
 Ship A - size 6  
 Ship B - size 4  
 Ship C - size 4  
