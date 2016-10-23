@@ -39,12 +39,13 @@ def print_board(_board_to_print, _x, _y):
 
 def main():
 	# Boars size options, for X and Y cordinates
-	#board_xy_options = [1, 2, 3, 4, 6]
-	board_xy_options = [10, 12, 14, 16, 18]
+	board_xy_options = [1, 2, 3, 4, 6]
+	#board_xy_options = [10, 12, 14, 16, 18]
 
-	# Ships sizes and hit counters
+	# Ships sizes, hit counters and status on the board
 	boats_size = {"A":6, "B":4, "C":4, "D":3, "E":3, "F":3, "G":2, "H":2, "I":2}
 	boats_hit_counter = boats_size
+	boats_status = {"A":False, "B":False, "C":False, "D":False, "E":False, "F":False, "G":False, "H":False, "I":False}
 
 	# Orientation options
 	boats_hv_options = ["h", "v"]
@@ -70,7 +71,10 @@ def main():
 	# Placing the boats on the board
 	for boat in boats_size.keys():
 		boat_ok = False
-		while( not boat_ok ):
+		boat_tries_max = int((board_x * board_y) * 4)
+		boat_tries_counter = 0
+ 
+		while( boat_tries_counter <= boat_tries_max ):
 			# Coordination Randomicaly generated 
 			boat_x = random.randint(1, board_x) - 1
 			boat_y = random.randint(1, board_y) - 1
@@ -79,14 +83,23 @@ def main():
 			# Call the function to validate the boat on the board
 			boat_ok = check_boat_board(board_boats, boats_size[boat], boat_x, boat_y, boat_hv, board_x, board_y)
 
-		# Placing, after validation
-		if ( boat_hv == "h" ):
-			for z in range(boats_size[boat]):
-				board_boats[boat_x + z][boat_y] = boat
+			# Check if the boat is ok for the board
+			if ( boat_ok ):
+				boat_tries_counter = boat_tries_max + 1
+				boats_status[boat] = True
 
-		if ( boat_hv == "v" ):
-			for z in range(boats_size[boat]):
-				board_boats[boat_x][boat_y + z] = boat
+			# Increment the counter
+			boat_tries_counter += 1
+
+		# If the boat is ok, lets place the boat on the board
+		if ( boat_ok ):
+			if ( boat_hv == "h" ):
+				for z in range(boats_size[boat]):
+					board_boats[boat_x + z][boat_y] = boat
+
+			if ( boat_hv == "v" ):
+				for z in range(boats_size[boat]):
+					board_boats[boat_x][boat_y + z] = boat
 
 	# Loop for the shots
 	while ( True ):
@@ -107,18 +120,36 @@ def main():
 		print "Board:"
 		print_board(board_shots, board_x, board_y)
 
+		# Check if we have at least one boat on the board
+		has_boats = False
+
+		for boat in boats_status.keys():
+			if ( boats_status[boat] ):
+				has_boats = True
+
+		if ( not has_boats):
+			print " "
+			print "Unfortunately I could not place any boat on the board.."
+			print "Please, do not give up. Try again."
+			print "See you..."
+			print " "
+
+			sys.exit(0)
+
 		# Check if all boats are sunk
 		all_sunk = True
 
 		for boat in boats_hit_counter.keys():
-			if ( boats_hit_counter[boat] > 0 ):
-				all_sunk = False			
+			if ( boats_status[boat]): 
+				if ( boats_hit_counter[boat] > 0 ):
+					all_sunk = False			
 
 		# If so, the game is over
 		if ( all_sunk ):
 			print " "
 			print "You win !!!!"
 			print " "
+
 			sys.exit(0)
 
 		# Getting the x coordinate
