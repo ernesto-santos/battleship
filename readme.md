@@ -19,4 +19,4 @@ http://code.activestate.com/recipes/578836-the-game-of-battleships-in-python/
   
 I still have a challenge, that is to work with small board, where the game will need to know which ships could be placed on the board.
   
-Thanks for the challenge Anders.
+Anders, thanks for the challenge.
