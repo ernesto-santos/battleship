@@ -14,7 +14,7 @@ Ship G - size 2
 Ship H - size 2  
 Ship I - size 2  
   
-I used the site bellow as reference for some ideas:
+I used the site bellow as reference for some ideas:  
 http://code.activestate.com/recipes/578836-the-game-of-battleships-in-python/
   
 I still have a challenge, that is to work with small board, where the game will need to know which ships could be placed on the board.
